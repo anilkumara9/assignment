@@ -1,0 +1,69 @@
+{
+  "id": "lib_notion",
+  "appName": "Notion",
+  "domain": "notion.so",
+  "source": "library",
+  "createdAt": "2026-11-04T00:00:00.000Z",
+  "summary": "Notion splits the world in two: internal integrations, which work instantly for your own workspace, and public integrations, which any workspace can install through OAuth. Public ones go through a security review before Notion publishes them.",
+  "oauthSupported": true,
+  "difficulty": {
+    "level": "Moderate",
+    "score": 3,
+    "rationale": [
+      "Internal use has zero friction - no review at all.",
+      "Public integrations need Notion's security review before publication.",
+      "The capability model (read/insert/update checkboxes) is simpler than classic scope lists."
+    ]
+  },
+  "timeEstimate": {
+    "setup": "About 30 minutes to create a public integration and run OAuth against a test workspace.",
+    "approval": "Roughly a few days to a week for the security review, based on Notion's review documentation; not a published SLA.",
+    "basis": [
+      { "text": "Notion documents a security review for public integrations.", "evidence": "curated" },
+      { "text": "Exact review duration is not guaranteed anywhere - treat it as an estimate.", "evidence": "unverified" }
+    ]
+  },
+  "steps": [
+    { "n": 1, "title": "Create the integration", "actor": "developer", "detail": "In Notion, go to Settings > Connections > Develop or manage integrations (or notion.so/profile/integrations) and create a new integration. Choose Public if other workspaces will install it.", "evidence": "curated" },
+    { "n": 2, "title": "Fill in the public listing basics", "actor": "developer", "detail": "Public integrations need a company name, a privacy policy URL, a terms URL and a support contact before Notion lets you submit.", "evidence": "curated" },
+    { "n": 3, "title": "Configure OAuth and capabilities", "actor": "developer", "detail": "Add your redirect URI and tick only the capabilities you need (read content, insert content, etc.).", "evidence": "curated" },
+    { "n": 4, "title": "Test, then submit for review", "actor": "developer", "detail": "Install it into a test workspace through the OAuth URL. When it behaves, submit - Notion's team reviews security practices before publishing.", "evidence": "curated" }
+  ],
+  "requirements": [
+    { "item": "A Notion account and a workspace to develop in", "evidence": "curated" },
+    { "item": "Privacy policy URL, terms URL and support contact (public integrations)", "evidence": "curated" },
+    { "item": "An HTTPS redirect URI", "evidence": "curated" }
+  ],
+  "gotchas": [
+    { "text": "An integration only sees pages explicitly shared with it - most 'API returns nothing' bugs are unshared pages, not auth problems.", "evidence": "curated" },
+    { "text": "Capabilities are broad checkboxes, not fine-grained scopes; you can't request half of one.", "evidence": "curated" }
+  ],
+  "agentCanDo": [
+    "Re-read Notion's authorization and security-review docs and refresh this guide",
+    "Check whether your planned API calls fit the capability checkboxes"
+  ],
+  "developerMustDo": [
+    "Create the integration under their own Notion account",
+    "Write and host the privacy policy and terms pages",
+    "Submit for the security review and answer questions"
+  ],
+  "tested": {
+    "whatWasTested": [
+      "Researched by hand against Notion's authorization and integration security-review documentation (links in Sources)",
+      "Re-checkable live: run an investigation for 'notion' and the agent re-fetches Notion's docs"
+    ],
+    "uncertain": [
+      "No integration was submitted to Notion's review from this tool; the review window is an estimate"
+    ]
+  },
+  "sources": [
+    { "url": "https://developers.notion.com/docs/authorization", "evidence": "curated" },
+    { "url": "https://developers.notion.com/docs/integration-security-review", "evidence": "curated" }
+  ],
+  "evidenceLegend": {
+    "fetched": "Confirmed on a page fetched live during an investigation",
+    "curated": "Researched provider knowledge shipped with the tool",
+    "inferred": "Agent conclusion from combined signals",
+    "unverified": "Not confirmed - check before relying on it"
+  }
+}
