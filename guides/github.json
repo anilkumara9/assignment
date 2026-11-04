@@ -1,0 +1,69 @@
+{
+  "id": "lib_github",
+  "appName": "GitHub",
+  "domain": "github.com",
+  "source": "library",
+  "createdAt": "2026-11-04T00:00:00.000Z",
+  "summary": "GitHub is about as friendly as OAuth gets. Create an OAuth App and it works for any GitHub user straight away - no review, no verification, no waiting. The one real decision is whether you need an OAuth App or a GitHub App, because they are different things.",
+  "oauthSupported": true,
+  "difficulty": {
+    "level": "Easy",
+    "score": 1,
+    "rationale": [
+      "No approval or review gate for OAuth Apps.",
+      "The flow is the textbook authorization-code grant with solid docs.",
+      "The main trap is conceptual: OAuth App vs GitHub App."
+    ]
+  },
+  "timeEstimate": {
+    "setup": "15 to 30 minutes from nothing to a working sign-in.",
+    "approval": "None - works immediately.",
+    "basis": [
+      { "text": "GitHub's own docs describe no review step for OAuth Apps.", "evidence": "curated" }
+    ]
+  },
+  "steps": [
+    { "n": 1, "title": "Register the OAuth App", "actor": "developer", "detail": "GitHub > Settings > Developer settings > OAuth Apps > New OAuth App. Set the homepage URL and the authorization callback URL.", "evidence": "curated" },
+    { "n": 2, "title": "Copy the client ID and secret", "actor": "developer", "detail": "Generate a client secret on the app page and keep it in your server environment, never in the browser or the repo.", "evidence": "curated" },
+    { "n": 3, "title": "Run the flow", "actor": "developer", "detail": "Send users to github.com/login/oauth/authorize with your client ID and scopes, then exchange the returned code for a token. Done.", "evidence": "curated" }
+  ],
+  "requirements": [
+    { "item": "A GitHub account", "evidence": "curated" },
+    { "item": "A callback URL for your app (localhost works fine for development)", "evidence": "curated" }
+  ],
+  "gotchas": [
+    { "text": "An OAuth App always acts as the user who authorized it. If you need the app to act on its own (bot comments, installation tokens), you want a GitHub App instead.", "evidence": "curated" },
+    { "text": "Unverified OAuth Apps hit a limit of 50 new authorizations per hour - a problem only once you have real traffic.", "evidence": "curated" },
+    { "text": "You can't see a client secret again after leaving the page; store it when you create it.", "evidence": "curated" }
+  ],
+  "agentCanDo": [
+    "Keep this guide synced with GitHub's docs",
+    "Help decide OAuth App vs GitHub App from your feature list",
+    "List the scopes your API calls need"
+  ],
+  "developerMustDo": [
+    "Register the app under their own GitHub account",
+    "Guard the client secret",
+    "Choose scopes and implement token storage"
+  ],
+  "tested": {
+    "whatWasTested": [
+      "Researched by hand against GitHub's OAuth Apps documentation (links in Sources)",
+      "Re-checkable live: run an investigation for 'github' and the agent re-fetches GitHub's docs"
+    ],
+    "uncertain": [
+      "The 50-authorizations-per-hour limit for unverified apps is from GitHub's docs, not from hitting the limit ourselves"
+    ]
+  },
+  "sources": [
+    { "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app", "evidence": "curated" },
+    { "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps", "evidence": "curated" },
+    { "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/rate-limits-for-oauth-apps", "evidence": "curated" }
+  ],
+  "evidenceLegend": {
+    "fetched": "Confirmed on a page fetched live during an investigation",
+    "curated": "Researched provider knowledge shipped with the tool",
+    "inferred": "Agent conclusion from combined signals",
+    "unverified": "Not confirmed - check before relying on it"
+  }
+}
