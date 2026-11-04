@@ -1,0 +1,76 @@
+{
+  "id": "lib_google",
+  "appName": "Google",
+  "domain": "google.com",
+  "source": "library",
+  "createdAt": "2026-11-04T00:00:00.000Z",
+  "summary": "Google supports OAuth 2.0 for sign-in and API access, and the basics are quick. The hard part is verification: the moment you ask for sensitive scopes (Gmail, Drive, Calendar), Google wants to review your app before strangers can use it without a scary warning screen.",
+  "oauthSupported": true,
+  "difficulty": {
+    "level": "Hard",
+    "score": 4,
+    "rationale": [
+      "Creating the OAuth client itself is easy - the weight comes from Google's verification program.",
+      "Sensitive scopes trigger mandatory verification with a written justification per scope, a demo video, and a verified domain.",
+      "Restricted scopes (reading Gmail, for example) add a third-party security assessment on top."
+    ]
+  },
+  "timeEstimate": {
+    "setup": "About an hour to create the project, configure the consent screen and get a working client ID.",
+    "approval": "A few days to several weeks for verification, depending on scopes; restricted-scope security assessments can run longer.",
+    "basis": [
+      { "text": "Verification steps and the unverified-app warning are described in Google's OAuth verification help.", "evidence": "curated" },
+      { "text": "No fixed SLA is published for verification, so treat any timeline as an estimate.", "evidence": "unverified" }
+    ]
+  },
+  "steps": [
+    { "n": 1, "title": "Create a Google Cloud project", "actor": "developer", "detail": "In Google Cloud Console, create a project, then open APIs & Services > OAuth consent screen. Fill in the app name, support email, homepage and privacy policy links.", "evidence": "curated" },
+    { "n": 2, "title": "Create the OAuth client", "actor": "developer", "detail": "Under APIs & Services > Credentials, create an OAuth 2.0 Client ID (Web application) and register your redirect URIs. Keep the client secret server-side.", "evidence": "curated" },
+    { "n": 3, "title": "Stay in Testing while you build", "actor": "developer", "detail": "While the consent screen is in Testing, only test users you list can sign in, and their refresh tokens expire after 7 days. Fine for development; not for real users.", "evidence": "curated" },
+    { "n": 4, "title": "Submit for verification before launch", "actor": "developer", "detail": "Switch publishing status to In production and submit. For sensitive scopes, write a plain-English justification for each scope and record a short video showing exactly how the app uses them. Verify ownership of your domain in Search Console.", "evidence": "curated" },
+    { "n": 5, "title": "Answer the reviewer's questions", "actor": "developer", "detail": "Google's review team replies by email and often asks for changes. Each round adds days, so the first submission should be complete.", "evidence": "curated" }
+  ],
+  "requirements": [
+    { "item": "A Google account and a Google Cloud project", "evidence": "curated" },
+    { "item": "A public homepage and privacy policy on a domain you own (verified in Search Console)", "evidence": "curated" },
+    { "item": "Pre-registered HTTPS redirect URIs", "evidence": "curated" },
+    { "item": "A demo video and per-scope justifications if you use sensitive scopes", "evidence": "curated" }
+  ],
+  "gotchas": [
+    { "text": "Unverified apps show a warning screen and are capped at 100 test users - new users simply can't get through.", "evidence": "curated" },
+    { "text": "Adding a sensitive scope later means re-verification.", "evidence": "curated" },
+    { "text": "Refresh tokens for test users expire after 7 days in Testing mode, which looks like a bug if you don't know it's coming.", "evidence": "curated" }
+  ],
+  "agentCanDo": [
+    "Read Google's current OAuth and verification docs and keep this guide fresh",
+    "Map the scopes you need to Google's sensitive/restricted categories",
+    "Draft the per-scope justifications and the verification checklist"
+  ],
+  "developerMustDo": [
+    "Own the Google account, the Cloud project and the domain",
+    "Record the demo video and submit the verification form",
+    "Reply to Google's review team and make requested changes"
+  ],
+  "tested": {
+    "whatWasTested": [
+      "This guide was researched by hand against Google's OAuth verification help and identity documentation (links in Sources)",
+      "You can re-verify it live: run an investigation for 'google' from the home page and the agent will fetch Google's docs again"
+    ],
+    "uncertain": [
+      "No app was actually submitted to Google's verification from this tool, so review duration is an estimate from documentation, not measurement",
+      "Google adjusts scope classifications; check the current sensitive/restricted lists before you submit"
+    ]
+  },
+  "sources": [
+    { "url": "https://developers.google.com/identity/protocols/oauth2", "evidence": "curated" },
+    { "url": "https://support.google.com/cloud/answer/10311615", "evidence": "curated" },
+    { "url": "https://support.google.com/cloud/answer/9110914", "evidence": "curated" },
+    { "url": "https://developers.google.com/terms/api-services-user-data-policy", "evidence": "curated" }
+  ],
+  "evidenceLegend": {
+    "fetched": "Confirmed on a page fetched live during an investigation",
+    "curated": "Researched provider knowledge shipped with the tool",
+    "inferred": "Agent conclusion from combined signals",
+    "unverified": "Not confirmed - check before relying on it"
+  }
+}
