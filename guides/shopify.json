@@ -1,0 +1,72 @@
+{
+  "id": "lib_shopify",
+  "appName": "Shopify",
+  "domain": "shopify.com",
+  "source": "library",
+  "createdAt": "2026-11-04T00:00:00.000Z",
+  "summary": "Shopify's path depends on who will use the app. A custom app for one store needs no approval at all. A public app on the App Store goes through a real review against a published requirements checklist - expect homework, not just a form.",
+  "oauthSupported": true,
+  "difficulty": {
+    "level": "Moderate",
+    "score": 3,
+    "rationale": [
+      "Custom single-store apps skip review entirely.",
+      "Public App Store apps face a documented requirements checklist and human review.",
+      "Extra applications (protected customer data, billing rules) can stack on top."
+    ]
+  },
+  "timeEstimate": {
+    "setup": "A few hours to create a Partner account, scaffold an app and complete OAuth on a development store.",
+    "approval": "For public apps, plan for about one to three weeks of review, longer if reviewers request changes.",
+    "basis": [
+      { "text": "Shopify publishes the app review requirements and process; durations are community-reported, not a Shopify SLA.", "evidence": "curated" },
+      { "text": "The one-to-three-week window is an estimate, not a confirmed figure.", "evidence": "unverified" }
+    ]
+  },
+  "steps": [
+    { "n": 1, "title": "Create a Partner account and an app", "actor": "developer", "detail": "Sign up at partners.shopify.com, create an app, and note the API key and secret.", "evidence": "curated" },
+    { "n": 2, "title": "Build against a development store", "actor": "developer", "detail": "Development stores are free for partners. Install through the OAuth flow and request only the access scopes you use.", "evidence": "curated" },
+    { "n": 3, "title": "Work through the app requirements checklist", "actor": "developer", "detail": "Shopify publishes the checklist reviewers use: embedded-app rules, billing through the Billing API for paid apps, listing content, a screencast, and working installs.", "evidence": "curated" },
+    { "n": 4, "title": "Submit and respond to reviewers", "actor": "developer", "detail": "Reviews are human and specific. Budget time for at least one round of fixes.", "evidence": "curated" }
+  ],
+  "requirements": [
+    { "item": "A Shopify Partner account (free)", "evidence": "curated" },
+    { "item": "A development store for testing", "evidence": "curated" },
+    { "item": "Listing content and a screencast for public apps", "evidence": "curated" },
+    { "item": "Separate data-protection application if you need protected customer data", "evidence": "curated" }
+  ],
+  "gotchas": [
+    { "text": "Paid apps must use Shopify's Billing API - rolling your own checkout gets rejected.", "evidence": "curated" },
+    { "text": "Protected customer data (names, addresses, etc.) needs its own approval on top of app review.", "evidence": "curated" },
+    { "text": "Access scopes can only be requested at install time; adding scopes means merchants re-authorize.", "evidence": "curated" }
+  ],
+  "agentCanDo": [
+    "Re-read Shopify's authentication and app-requirements docs and refresh this guide",
+    "Walk the published requirements checklist against your app description"
+  ],
+  "developerMustDo": [
+    "Own the Partner account and the app",
+    "Record the screencast and write the listing",
+    "Submit for review and handle change requests"
+  ],
+  "tested": {
+    "whatWasTested": [
+      "Researched by hand against Shopify's authentication/authorization docs and app requirements (links in Sources)",
+      "Re-checkable live: run an investigation for 'shopify' and the agent re-fetches Shopify's docs"
+    ],
+    "uncertain": [
+      "No app was submitted to Shopify review from this tool; the review window is an estimate",
+      "Shopify updates its requirements checklist - read the current version before submitting"
+    ]
+  },
+  "sources": [
+    { "url": "https://shopify.dev/docs/apps/build/authentication-authorization", "evidence": "curated" },
+    { "url": "https://shopify.dev/docs/apps/launch/app-requirements", "evidence": "curated" }
+  ],
+  "evidenceLegend": {
+    "fetched": "Confirmed on a page fetched live during an investigation",
+    "curated": "Researched provider knowledge shipped with the tool",
+    "inferred": "Agent conclusion from combined signals",
+    "unverified": "Not confirmed - check before relying on it"
+  }
+}
