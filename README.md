@@ -68,16 +68,15 @@ Set `PORT` to change the port. That's the whole setup.
 
 ## Demo
 
-[![Watch the demo](docs/demo-poster.png)](docs/demo.mp4)
+https://github.com/user-attachments/assets/71823d69-354e-43b0-92f5-16afbf45846c
 
-A 52-second run of the real thing: the library, a hand-researched guide, and a
-live investigation for Spotify (an app outside the library) generating its
-guide from documentation fetched on the spot. Click the image - GitHub's file
-page plays the video inline.
+A narrated 79-second run of the real thing: the library, a hand-researched
+guide, and a live investigation for Spotify (an app outside the library)
+generating its guide from documentation fetched on the spot.
 
 ## How it's built
 
-![System design](docs/architecture.png)
+![System design](https://github.com/user-attachments/assets/fe31acbb-6e57-4e3e-865f-d14d1db9dc9a)
 
 ([interactive version](docs/architecture.html) - self-contained HTML, opens in
 any browser)
