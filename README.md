@@ -66,7 +66,23 @@ node server.js
 
 Set `PORT` to change the port. That's the whole setup.
 
+## Demo
+
+[![Watch the demo](docs/demo-poster.png)](docs/demo.mp4)
+
+A 52-second run of the real thing: the library, a hand-researched guide, and a
+live investigation for Spotify (an app outside the library) generating its
+guide from documentation fetched on the spot. Click the image - GitHub's file
+page plays the video inline.
+
 ## How it's built
+
+![System design](docs/architecture.png)
+
+([interactive version](docs/architecture.html) - self-contained HTML, opens in
+any browser)
+
+The whole thing is one small Node.js process with zero npm dependencies:
 
 ```
 server.js            HTTP server: serves the UI, runs investigation jobs, stores guides
@@ -75,13 +91,22 @@ lib/knowledge.js     curated knowledge base for well-known providers
 lib/guideStore.js    JSON-file storage (library guides + live-generated guides)
 guides/              the hand-researched library guides (JSON)
 public/index.html    the entire frontend - no build step
+docs/                the system-design diagram above (PNG + self-contained HTML)
 data/generated/      where live-generated guides are saved (gitignored)
 ```
 
 An investigation is a background job. `POST /api/investigate` starts one and
 returns a job id; the UI polls `GET /api/jobs/:id` and streams the agent's
-activity log to the screen as it happens. Finished guides are saved to disk
-and served at `/g/:id`, so a shared link survives a restart.
+activity log to the screen as it happens. The agent resolves the app's domain,
+finds its developer documentation (guessed doc hosts, links mined from the
+homepage, a search-engine fallback, and a second hop for developer portals
+that render as JavaScript shells), fetches the OAuth pages, and pulls out the
+signals that matter: app registration, redirect URIs, scopes, PKCE, review
+and verification requirements, stated approval timelines. For well-known
+providers it also merges a hand-researched knowledge-base entry, labeled
+separately so live evidence and curated facts never blur together. Finished
+guides are saved to disk and served at `/g/:id`, so a shared link survives a
+restart.
 
 ## Key decisions
 
