@@ -7,6 +7,21 @@ this: the OAuth dance itself is an afternoon, but nobody can tell you whether
 the provider's approval process takes two days or two months. You find out by
 doing it. This tool exists so you can find out *before* doing it.
 
+## Demo
+
+https://github.com/user-attachments/assets/71823d69-354e-43b0-92f5-16afbf45846c
+
+A narrated 79-second run of the real thing: the library, a hand-researched
+guide, and a live investigation for Spotify (an app outside the library)
+generating its guide from documentation fetched on the spot.
+
+## System design
+
+![System design](https://github.com/user-attachments/assets/fe31acbb-6e57-4e3e-865f-d14d1db9dc9a)
+
+([interactive version](docs/architecture.html) - self-contained HTML, opens in
+any browser)
+
 ## What it does
 
 - **A guide library.** Hand-researched setup guides for a handful of
@@ -66,20 +81,7 @@ node server.js
 
 Set `PORT` to change the port. That's the whole setup.
 
-## Demo
-
-https://github.com/user-attachments/assets/71823d69-354e-43b0-92f5-16afbf45846c
-
-A narrated 79-second run of the real thing: the library, a hand-researched
-guide, and a live investigation for Spotify (an app outside the library)
-generating its guide from documentation fetched on the spot.
-
 ## How it's built
-
-![System design](https://github.com/user-attachments/assets/fe31acbb-6e57-4e3e-865f-d14d1db9dc9a)
-
-([interactive version](docs/architecture.html) - self-contained HTML, opens in
-any browser)
 
 The whole thing is one small Node.js process with zero npm dependencies:
 
@@ -141,14 +143,3 @@ restart.
 - No LLM key is required or used; if you wanted one, the natural place to add
   it is the guide-composition step in `lib/investigator.js`, with every
   LLM-written claim still carrying an evidence label.
-
-## What I verified before shipping this
-
-- `node server.js` starts clean and serves the UI, the library and the API.
-- Live investigations were run end-to-end for providers inside the curated
-  base (Linear) and outside it (Todoist, Figma), including domain resolution
-  from a bare name and from a pasted URL.
-- Generated guides persist to disk and their share links work after a restart.
-
-Built by Meda Anilkumar as a take-home assignment for Composio's APM
-(Integrations) role.
