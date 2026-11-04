@@ -9,7 +9,12 @@ const { investigate } = require("./lib/investigator");
 
 const PORT = process.env.PORT || 3000;
 const PUBLIC = path.join(__dirname, "public");
-const jobs = new Map(); // jobId -> { status, steps, guideId, error }
+const jobs = new Map(); // jobId -> { status, steps, guideId, error, touched }
+const JOB_TTL = 60 * 60 * 1000;
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, j] of jobs) if (j.status !== "running" && now - j.touched > JOB_TTL) jobs.delete(id);
+}, 10 * 60 * 1000).unref();
 
 function sendJson(res, code, obj) {
   const body = JSON.stringify(obj);
@@ -18,7 +23,9 @@ function sendJson(res, code, obj) {
 }
 
 function serveStatic(req, res) {
-  let p = decodeURIComponent(new URL(req.url, "http://x").pathname);
+  let p;
+  try { p = decodeURIComponent(new URL(req.url, "http://x").pathname); }
+  catch { res.writeHead(400); return res.end("bad request"); }
   if (p === "/" || p.startsWith("/g/")) p = "/index.html";
   const file = path.normalize(path.join(PUBLIC, p));
   if (!file.startsWith(PUBLIC)) { res.writeHead(403); return res.end(); }
@@ -56,11 +63,11 @@ const server = http.createServer((req, res) => {
         return sendJson(res, 400, { error: "Send JSON like {\"query\": \"linear.app\"} - an app name or a website URL." });
       }
       const jobId = "j_" + crypto.randomBytes(6).toString("hex");
-      const job = { status: "running", steps: [], guideId: null, error: null };
+      const job = { status: "running", steps: [], guideId: null, error: null, touched: Date.now() };
       jobs.set(jobId, job);
       investigate(query.trim(), job.steps)
-        .then(guide => { store.saveGenerated(guide); job.guideId = guide.id; job.status = "done"; })
-        .catch(e => { job.status = "failed"; job.error = e.message; });
+        .then(guide => { store.saveGenerated(guide); job.guideId = guide.id; job.status = "done"; job.touched = Date.now(); })
+        .catch(e => { job.status = "failed"; job.error = e.message; job.touched = Date.now(); });
       sendJson(res, 202, { jobId });
     });
     return;
