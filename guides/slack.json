@@ -1,0 +1,73 @@
+{
+  "id": "lib_slack",
+  "appName": "Slack",
+  "domain": "slack.com",
+  "source": "library",
+  "createdAt": "2026-11-04T00:00:00.000Z",
+  "summary": "A Slack app works in your own workspace the minute you create it - there is no gate at all for that. Review only enters the picture when you want other workspaces to install it through public distribution.",
+  "oauthSupported": true,
+  "difficulty": {
+    "level": "Moderate",
+    "score": 3,
+    "rationale": [
+      "Single-workspace apps need no approval, which keeps the common case simple.",
+      "Public distribution goes through Slack's app review, and reviewers check that every scope is justified.",
+      "The OAuth flow itself is standard and well documented."
+    ]
+  },
+  "timeEstimate": {
+    "setup": "Under an hour to create the app, add redirect URLs and run the OAuth flow against your own workspace.",
+    "approval": "For public distribution, plan for a few days to about two weeks of Marketplace review, plus time to fix anything reviewers flag.",
+    "basis": [
+      { "text": "Slack's app review documentation describes the distribution review; no fixed SLA is published.", "evidence": "curated" },
+      { "text": "Review duration is an estimate - Slack does not guarantee a timeline.", "evidence": "unverified" }
+    ]
+  },
+  "steps": [
+    { "n": 1, "title": "Create the app", "actor": "developer", "detail": "Go to api.slack.com/apps, choose Create New App, and pick 'from scratch'. The app is live in your workspace immediately.", "evidence": "curated" },
+    { "n": 2, "title": "Add scopes and redirect URLs", "actor": "developer", "detail": "Under OAuth & Permissions, add only the bot/user scopes you actually call, and register your HTTPS redirect URL.", "evidence": "curated" },
+    { "n": 3, "title": "Install and test in your workspace", "actor": "developer", "detail": "Use the install URL to walk the OAuth flow yourself. Everything works here without any review.", "evidence": "curated" },
+    { "n": 4, "title": "Turn on public distribution and submit", "actor": "developer", "detail": "Under Manage Distribution, complete the checklist (install link, redirect URLs, removing hard-coded workspace references) and submit for review.", "evidence": "curated" }
+  ],
+  "requirements": [
+    { "item": "A Slack account and a workspace where you can create apps", "evidence": "curated" },
+    { "item": "HTTPS redirect URLs, registered on the app's OAuth settings page", "evidence": "curated" },
+    { "item": "A short explanation of what each requested scope is for (asked during review)", "evidence": "curated" }
+  ],
+  "gotchas": [
+    { "text": "Asking for scopes you don't use is the most common reason reviews bounce back.", "evidence": "curated" },
+    { "text": "Bot tokens and user tokens are different things in Slack - check which one each API method expects.", "evidence": "curated" },
+    { "text": "Socket Mode is handy for development but doesn't replace the OAuth install flow for distribution.", "evidence": "curated" }
+  ],
+  "agentCanDo": [
+    "Read Slack's current auth and app-review docs and refresh this guide",
+    "Map your feature list to the smallest scope set",
+    "Draft the scope justifications reviewers ask for"
+  ],
+  "developerMustDo": [
+    "Create the app under their own Slack account and workspace",
+    "Complete the distribution checklist and submit for review",
+    "Respond to reviewer questions"
+  ],
+  "tested": {
+    "whatWasTested": [
+      "Researched by hand against Slack's authentication and app-review documentation (links in Sources)",
+      "Re-checkable live: run an investigation for 'slack' and the agent re-fetches Slack's docs"
+    ],
+    "uncertain": [
+      "No app was submitted to Slack review from this tool; review duration is an estimate",
+      "Slack renames scopes occasionally - confirm names against the current docs before coding"
+    ]
+  },
+  "sources": [
+    { "url": "https://docs.slack.dev/authentication/", "evidence": "curated" },
+    { "url": "https://docs.slack.dev/app-review/", "evidence": "curated" },
+    { "url": "https://api.slack.com/authentication/oauth-v2", "evidence": "curated" }
+  ],
+  "evidenceLegend": {
+    "fetched": "Confirmed on a page fetched live during an investigation",
+    "curated": "Researched provider knowledge shipped with the tool",
+    "inferred": "Agent conclusion from combined signals",
+    "unverified": "Not confirmed - check before relying on it"
+  }
+}
